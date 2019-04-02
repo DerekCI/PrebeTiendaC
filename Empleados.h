@@ -2,122 +2,133 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-
+#include "Login.h"
 
 typedef struct Empleado {
 	char nombre_empleado[32];
+	char apellido[32];
 	char usuario[32];
 	char contrasena[32];
-	char area[20];
-	int sueldo[10];
+	char tipo_empleado[20];
+	char  sueldo[20];
 	struct Empleado* siguiente;
 }Empleado;
 Empleado* empleados_inicio = NULL;
-Empleado* empleados_final = NULL;
-uint num_empleados = 0;
 
-//Prototipos
-Empleado* crearEmpleado(char nombre_empleado[],char usuario[], char contrasena[], char area[], int sueldo[] );
-void agregarEmpleado(Empleado* empleado);
-Empleado* removerEmpleado(char nombre_empleado[]);
-bool EmpleadoRegistrado(char nombre_empleado[]);
+void agregaEmpleado(){
+	int finalarchivo;
+	int opcion = 2;
+	char nombre[10];
+	do{
+		Empleado empleado;
+		FILE* archivo=fopen("empleados.txt","a+");
 
-Empleado* crearEmpleado(char nombre_empleado[],char usuario[], char contrasena[], char area[], int sueldo[]) {
-	
-	Empleado* nuevo = (Empleado*)malloc(sizeof(Empleado));
-	strcpy(nuevo->nombre_empleado,nombre_empleado);
-	strcpy(nuevo->contrasena,contrasena);
-	strcpy(nuevo->area,area);
-	nuevo->sueldo, sueldo;
-	nuevo->siguiente = NULL;
-	return nuevo;
+		printf("Nombre del empleado: ");
+		scanf("%s",empleado.nombre_empleado);
+		fprintf(archivo,"\n%s \n",empleado.nombre_empleado);
+		//fputs(empleado.nombre_empleado,archivo);
+
+		printf("Apellido del empleado: \n");
+		scanf("%s",empleado.apellido);
+		fprintf(archivo,"%s \n",empleado.apellido);
+		//fputs(empleado.apellido,archivo);
+
+		printf("Usuario del empleado: \n");
+		scanf(" %s",empleado.usuario);
+		fprintf(archivo,"%s \n",empleado.usuario);
+		//fputs(empleado.usuario,archivo);
+
+		printf("Contraseña del empleado: \n");
+		scanf(" %s",empleado.contrasena);
+		fprintf(archivo,"%s \n",empleado.contrasena);
+		//fputs(empleado.contrasena,archivo);
+
+		printf("Tipo de empleado: \n");
+		scanf(" %s",empleado.tipo_empleado);
+		fprintf(archivo,"%s \n",empleado.tipo_empleado);
+		//fputs(empleado.tipo_empleado,archivo);
+
+		printf("Sueldo del empleado: \n");
+		scanf("%s",empleado.sueldo);
+		fprintf(archivo,"%s \n",empleado.sueldo);	
+		//fputs(*empleado.sueldo,archivo);
+
+		fseek(archivo,0,SEEK_END);
+		finalarchivo = ftell(archivo);
+		fclose(archivo);
+		printf("Desea continuar(1)?\n");
+		scanf("%d", &opcion);
+		printf("\n");
+
+	}while(opcion == 1 || opcion == 1);	
 }
-void agregarEmpleado(Empleado* empleado) {
-	if (empleados_inicio == NULL){
-		empleados_inicio = empleado;
-	}
-	else {
-		empleados_final->siguiente = empleado;
-	}
-	empleados_final = empleado;
-	num_empleados++;
-}
-Empleado* removerEmpleado(char nombre_empleado[]) {
-	
-	Empleado* aux = empleados_inicio;
-	if (empleados_inicio == empleados_final && strcmp(aux->nombre_empleado,nombre_empleado) == 0) {
-		empleados_inicio = NULL;
-		empleados_final = NULL;
+
+void eliminaEmpleado()
+{
+        FILE *fptr1, *fptr2;
+        int lno, linectr = 0;
+        char str[100],fname[100];        
+        char nombreel[100], temp[] = "temp.txt";
+        
+        printf("\n\n Borra un empleado:\n");
+        printf("-------------------------------------------------------------\n"); 
+        
+        fptr1 = fopen("empleados.txt", "r");
+        if (!fptr1) 
+        {
+                printf("NO se pudo abrir!!\n");      
+        }
+        fptr2 = fopen(temp, "w");
+        if (!fptr2) 
+        {
+                printf("Error en archivo aux");
+                fclose(fptr1);
+               
+        }
+        printf("Nombre a eliminar: \n");
 		
-		num_empleados--;
-		return aux;
-	}
-	else if (strcmp(aux->nombre_empleado,nombre_empleado) == 0) {
-		empleados_inicio = empleados_inicio->siguiente;
-		aux->siguiente = NULL;
-		
-		num_empleados--;
-		return aux;
-	}
-	else {
-		Empleado* scout = empleados_inicio;
-		while(strcmp(scout->nombre_empleado,nombre_empleado) != 0) {
-			scout = scout->siguiente;
-			if(scout == NULL) {
-				return NULL;
-			}
+		scanf("%s",nombreel);
+       
+        lno = obtieneLinea(nombreel);
+		lno++;
+        printf("Linea %d\n",lno);
+
+        for(int i=0;i<100;i++){
+			nombreel[i]='\0';
 		}
-		while(aux->siguiente != scout) {
-			aux = aux->siguiente;
-		}
-		aux->siguiente = scout->siguiente;
-		scout->siguiente = NULL;
-		
-		num_empleados--;
-		return scout;
-	}
-}
 
+       
+        while (!feof(fptr1)) 
+        {
+            strcpy(str, "\0");
+            fgets(str, 100, fptr1);
+            if(!feof(fptr1)) 
+            {
+                linectr++;
+             
+                if (linectr == lno ) 
+                {
+                	fprintf(fptr2, "%s", nombreel);
+                }else if(linectr == lno+1){	
+                	fprintf(fptr2, "%s",nombreel);
+                }else if(linectr == lno+2){	
+                	fprintf(fptr2, "%s",nombreel);
+                }else if(linectr == lno+3){	
+                	fprintf(fptr2, "%s",nombreel);
+                }else if(linectr == lno+4){	
+                	fprintf(fptr2, "%s",nombreel);
+                }else if(linectr == lno+5){	
+                	fprintf(fptr2, "%s",nombreel);
+                }else{
+                    fprintf(fptr2, "%s", str);
+                }
 
-
-
-void registrarEmpleado() {
-	char nombre_empleado[32];
-	char usuario[32];
-	char contrasena[32];
-	char area[20];
-	int sueldo[10];
-	//char buffer[32] = {'\0'};
-	do {
-		if(EmpleadoRegistrado(nombre_empleado)){
-			printf("Ese dud ya esta registrado.\n");
-		}
-		printf("Ingrese nombre de empleado: \n");
-		scanf("%c", nombre_empleado);
-		printf("Ingrese usuario de empleado: \n");
-		scanf("%c", usuario);
-		printf("Ingrese contraseña de empleado: \n");
-		scanf("%c", contrasena);
-		printf("Ingrese area de empleado: \n");
-		scanf("%c", area);
-		printf("Ingrese sueldo de empleado: \n");
-		scanf("%d", sueldo);
-
-	} while (EmpleadoRegistrado(nombre_empleado));
-
-	agregarEmpleado(crearEmpleado( nombre_empleado, usuario,  contrasena, area,  sueldo));
-	printf("Empleado agregado con exito!.\n");
-}
-
-bool EmpleadoRegistrado(char nombre_empleado[]) {
-	Empleado* aux = empleados_inicio;
-	while(aux != NULL && strcmp(aux->nombre_empleado,nombre_empleado) != 0) {
-		aux = aux->siguiente;
-	}
-	if (aux != NULL && strcmp(aux->nombre_empleado,nombre_empleado) == 0) {
-		return true;
-	}
-	else {
-		return false;
-	}
+           	}
+        }
+        fclose(fptr1);
+        fclose(fptr2);
+        remove("empleados.txt");
+        rename(temp, "empleados.txt");
+        printf(" Replacement did successfully..!! \n");
+ 
 }
