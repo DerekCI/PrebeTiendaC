@@ -18,6 +18,8 @@ Empleado* empleados_inicio = NULL;
 void replace(int line);
 int obtieneLinea(char* nombreEmp);
 int menuCambiaEmpleado();
+void agregaEmpleado();
+void eliminaEmpleado();
 
 int menuCambiaEmpleado(){
     char usuario[40];
@@ -164,7 +166,7 @@ void agregaEmpleado(){
 	char nombre[10];
 	do{
 		Empleado empleado;
-		FILE* archivo=fopen("empleados.txt","a+");
+		FILE* archivo=fopen("empleados","a+");
 
 		printf("Nombre del empleado: ");
 		scanf("%s",empleado.nombre_empleado);
@@ -193,7 +195,7 @@ void agregaEmpleado(){
 
 		printf("Sueldo del empleado: \n");
 		scanf("%s",empleado.sueldo);
-		fprintf(archivo,"%s \n",empleado.sueldo);	
+		fprintf(archivo,"%s ",empleado.sueldo);	
 		//fputs(*empleado.sueldo,archivo);
 
 		fseek(archivo,0,SEEK_END);
@@ -216,7 +218,7 @@ void eliminaEmpleado()
         printf("\n\n Borra un empleado:\n");
         printf("-------------------------------------------------------------\n"); 
         
-        fptr1 = fopen("empleados.txt", "r");
+        fptr1 = fopen("empleados", "r");
         if (!fptr1) 
         {
                 printf("NO se pudo abrir!!\n");      
@@ -262,7 +264,8 @@ void eliminaEmpleado()
                 	fprintf(fptr2, "%s",nombreel);
                 }else if(linectr == lno+5){	
                 	fprintf(fptr2, "%s",nombreel);
-                }else{
+                }
+                else{
                     fprintf(fptr2, "%s", str);
                 }
 
@@ -270,8 +273,8 @@ void eliminaEmpleado()
         }
         fclose(fptr1);
         fclose(fptr2);
-        remove("empleados.txt");
-        rename(temp, "empleados.txt");
+        remove("empleados");
+        rename(temp, "empleados");
         printf(" Borrado.!! \n");
  
 }
