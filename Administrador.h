@@ -8,11 +8,13 @@
 #include <stdbool.h>
 #include "Empleados.h"
 
+
 struct articulo {
-	int codigo;
-	char nombre[MAX];
-	char costo[MAX];
-	char precio[MAX];
+	char id[10];
+	char nombre[256];
+	char numeroproductos[10];
+	char compra[256];
+	char venta[256];
 };
 
 typedef struct articulos Articulos;
@@ -22,50 +24,54 @@ void altaBajaDepto();
 int menuAdmin();
 void mostrarInvDepto();
 void agregarArticulosNuevos();
+void eliminarArticulo();
 
 int menuAdmin(){
+
+	printf("----------------------------------------\n");
 	printf("[1] Dar de alta o baja departamentos\n");
 	printf("[2] Agregar articulos nuevos a un departamento\n");
-	printf("[3] Eliminar articulos\n");//FALTA
+	printf("[3] Eliminar articulos\n");
 	printf("[4] Modificar informacion de empleados\n");
 	printf("[5] Agregar empleados\n");
-	printf("[6] Eliminar empleados\n");//al eliminar empleado de los de en medio se agrega un salto de linea de mas
-	printf("[7] Ver gastos en sueldo\n");//FALTA
+	printf("[6] Eliminar empleados\n");
+	printf("[7] Ver gastos en sueldo\n");
 	printf("[8] Reporte de articulos\n");
-	printf("[9] Dinero en inventario\n");//FALTA
+	printf("[9] Dinero en inventario\n");
 	printf("[10] Salir\n");
+	printf("----------------------------------------\n");
 	int op;
 	scanf("%d",&op);
     switch (op){
         case 1:
-            altaBajaDepto();//ya sirve
+            altaBajaDepto();
             break;
         case 2:
             //agregaArticulos
-        	agregarArticulosNuevos();//ya sirve
+        	agregarArticulosNuevos();
             break;
         case 3:
             //eliminaArticulos
             break;
         case 4:
-            menuCambiaEmpleado();//ya sirve
+            menuCambiaEmpleado();
             break;
         case 5:
-            agregaEmpleado();//ya sirve
+            agregaEmpleado();
             break;
         case 6:
-            eliminaEmpleado();//al borrar un empleado de en medio deja un espacio de mas
+            eliminaEmpleado();
             break;
         case 7:
             printf("Se ve gasto en sueldos\n");
-            //funcion para ver gastos en sueldos
+         
             break;
         case 8:
-            //reporte articulos de un depto
-        	mostrarInvDepto();//ya sirve, los deptos son "depto.d"
+            /
+        	mostrarInvDepto();
             break;
         case 9:
-            //ver dinero en inventario
+            
             break;
         case 10:
         	return -1;
@@ -79,62 +85,58 @@ int menuAdmin(){
 
 void agregarArticulosNuevos(){
 	int a=0;
-	char repite = 1;
+	char rpp = 1;
 	char respuesta[2];
-	//FILE *art = fopen("articulos.txt","a");
+	
 
-	char depap[30];
+	char depBaja[30];
  	FILE *art;
- 	printf("Escribe el departamento para agregarle articulos nuevos: ");
-	scanf("%s",depap);
- 	strcat(depap,".d");
- 	art=fopen(depap,"a");
+ 	printf("Departamento que se quiere ingresar:  ");
+	scanf("%s",depBaja);
+ 	
+ 	art=fopen(depBaja,"a");
 
 	struct articulo Articulo[a];
 	do {
 		if(art)
 		{
-			printf("Cantidad del nuevo articulo que deseas agregar: ");
+			printf("--------------------------------\n");
+			printf("Cuantos articulos se agregaran? ");
 			scanf("%d", &a);
-			//fprintf(art,"\n%d\n ",a);
-
-			printf( "Escribe el codigo del articulo: " );
-			scanf( "%d", &Articulo[a].codigo);
-			fprintf(art,"\n%d\n",Articulo[a].codigo);
 			
-			printf( "Escribe el nombre del articulo: " );
-			scanf( "%s", &Articulo[a].nombre);
+			printf("Articulo: ");
+			scanf("%s", &Articulo[a].nombre);
 			fprintf(art,"%s\n",Articulo[a].nombre);
-			fprintf(art,"%d\n ",a);
+			fprintf(art,"%d\n",a);
 			
-			printf( "Escribe el costo del articulo: " );
-			scanf( "%s", &Articulo[a].costo );
-			fprintf(art,"%s\n",Articulo[a].costo);
+			printf("venta con el que se comprar el articulo");
+			scanf( "%s", &Articulo[a].compra );
+			fprintf(art,"%s\n",Articulo[a].compra);
 			
-			printf( "Escribe el precio del articulo: " );
-			scanf( "%s", &Articulo[a].precio );
-			fprintf(art,"%s\n",Articulo[a].precio);
+			printf("venta para el publico: ");
+			scanf( "%s", &Articulo[a].venta );
+			fprintf(art,"%s\n",Articulo[a].venta);
 		}
 			printf("\nDesea seguir ingresando productos? [S/N]: ");
 			scanf("%s",&respuesta);
 			if (!(strcmp(respuesta, "S") == 0 || strcmp(respuesta, "s") == 0)) {
-			repite = 0;
+			rpp = 0;
 			}
-	} while (repite);
+	} while (rpp);
 	
 	fclose(art);
 }
 
 void mostrarInvDepto(){
-	 	char depap[30];
+	 	char depBaja[30];
  	FILE *art;
- 	printf("Escribe el departamento para mostrar su inventario: ");
-	scanf("%s",depap);
- 	strcat(depap,".d");
- 	art=fopen(depap,"r");
+ 	printf("Departamento que se va a entrar: ");
+	scanf("%s",depBaja);
+ 	strcat(depBaja,".d");
+ 	art=fopen(depBaja,"r");
  
 	 if( art==NULL )
-  	printf("Error al abrir el fichero\n");
+  	printf("Error al abrir\n");
   
  	else
  	{
@@ -145,9 +147,9 @@ void mostrarInvDepto(){
  	printf("El orden de lo mostrado es:\n");
  	printf("--idArticulo\n");
  	printf("--NombreArticulo\n");
- 	printf("--CantidadArticulo\n");
- 	printf("--PrecioVenta\n");
- 	printf("--PrecioCompra\n");
+ 	printf("--numeroproductosArticulo\n");
+ 	printf("--ventaVenta\n");
+ 	printf("--ventaCompra\n");
  	printf("-------------------------------------------\n");
 	
 }
@@ -155,27 +157,22 @@ void mostrarInvDepto(){
 void altaBajaDepto() {
 	int i,op2,numArti;
 	
-	char depap[20];
-	char nombreDep[30]; //Aqui almacenamos el nombre que va a tener nuestro archivo 
-	char cadena1[30];
+	char depBaja[20];
+	char nombreDep[30]; 
+	char auxiliar1[30];
  	char *cadena;
- 	cadena=cadena1;
+ 	cadena=auxiliar1;
 
- /*	char nombreDep[20];
-	char cadena1[100];
- 	char *cadena;
- 	cadena=&cadena1;*/
- 	
- 	printf("PRUEBA DEPARTAMENTOS...\n");
 	printf("1. Dar de baja un departamento\n");
 	printf("2. Dar de alta un departamento\n");
 	printf("R: ");
 	scanf("%d",&op2);
 	
 	if(op2==1) {
-		printf("Que departamento quieres dar de baja? R: ");
-		scanf("%s",depap); //Se tiene que escribir todo el nombre del archivo, ejem -> departamento1.txt
-		if(remove(depap)==0) { // Eliminamos el archivo
+		printf("Que departamento quieres dar de baja? ");
+		scanf("%s",depBaja); 
+		strcat(depBaja,".txt");
+		if(remove(depBaja)==0) { 
         	printf("El archivo fue eliminado satisfactoriamente\n");
         }
     	else {
@@ -185,40 +182,37 @@ void altaBajaDepto() {
 	
 	else {
 		FILE *nuevoDepa;
-		printf("\nSe va a crear un departamento\n");
-		printf("Nombre del departamento: "); //se tiene que poner el nombre del depa con txt -> nuevoDepa.txt
-		scanf("%s",nombreDep); 
-		nuevoDepa = fopen ( nombreDep, "w+" );
-		printf("Cuandos articulos quieres agregar? ");
-		scanf("%d",&numArti);
-		for(i=0; i<numArti;i++) {
-			printf("\nidArticulo #%d: ",i+1);
-			almacenar(cadena); //mandamos a llamar a la funcion "almacenar" para alamacenar la cadena
-			fputs( cadena, nuevoDepa );	//escribirmos en el archivo lo que almacenamos en "cadena"
-			fputc('\n', nuevoDepa); //Da un salto de linea en el archivo
-			printf("Nombre del articulo #%d: ",i+1);
-			almacenar(cadena);
-			fputs( cadena, nuevoDepa );
-			fputc('\n', nuevoDepa); 
-			printf("Cantidad de articulos disponibles #%d: ",i+1);
-			almacenar(cadena);
-			fputs( cadena, nuevoDepa );
-			fputc('\n', nuevoDepa); 
-			printf("Precio venta #%d: ",i+1);
-			almacenar(cadena);
-			fputs( cadena, nuevoDepa );
-			fputc('\n', nuevoDepa); 
-			printf("Precio compra #%d: ",i+1);
-			almacenar(cadena);
-			fputs( cadena, nuevoDepa );
-			fputc('\n', nuevoDepa); //Damos dobre salto de linea para que empiece a escribir el siguiente artículo con una separación 
-			fputc('\n', nuevoDepa); 		
-		}
+		do {
+			if(art)
+			{
+				printf("--------------------------------\n");
+				printf("Cuantos articulos se agregaran? ");
+				scanf("%d", &a);
+			
+				printf("Articulo: ");
+				scanf("%s", &Articulo[a].nombre);
+				fprintf(art,"%s\n",Articulo[a].nombre);
+				fprintf(art,"%d\n",a);
+			
+				printf("venta con el que se comprar el articulo");
+				scanf( "%s", &Articulo[a].compra );
+				fprintf(art,"%s\n",Articulo[a].compra);
+			
+				printf("venta para el publico: ");
+				scanf( "%s", &Articulo[a].venta );
+				fprintf(art,"%s\n",Articulo[a].venta);
+			}
+				printf("\nDesea seguir ingresando productos? [S/N]: ");
+				scanf("%s",&respuesta);
+				if (!(strcmp(respuesta, "S") == 0 || strcmp(respuesta, "s") == 0)) {
+					rpp = 0;
+				}
+		} while (rpp);		
+	}
 					
 		fclose(nuevoDepa); //cerramos el archivo
 		
-	return 0;
-	}
+	
 }
 
 void almacenar(char* cadena) {
@@ -226,4 +220,75 @@ void almacenar(char* cadena) {
 	scanf("%[^\n]",cadena);
 	getchar();
  	
+}
+void eliminarArticulo(){
+	
+	FILE *fptr1, *fptr2;
+        int lno, linectr = 0;
+        char str[100],fname[100];        
+        char nombreart[100], temp[] = "temp.txt";
+        char nombredep2[100];
+        
+        printf("\n\n Borra un articulo:\n");
+        printf("-------------------------------------------------------------\n"); 
+        printf("A que departamento quieres entrar?\n");
+        scanf("%s",nombredep2);
+        fptr1 = fopen(nombredep2, "r");
+        if (!fptr1) 
+        {
+                printf("NO se pudo abrir!!\n");      
+        }
+        fptr2 = fopen(temp, "w");
+        if (!fptr2) 
+        {
+                printf("Error en archivo aux");
+                fclose(fptr1);
+               
+        }
+        printf("Articulo a eliminar: \n");
+		
+		scanf("%s",&nombreart);
+		printf("----------------------");
+		printf("%s",nombreart);
+		//(----------------);
+        lno = obtieneLinea(nombreart);
+		lno--;
+        printf("Linea %d\n",lno);
+
+        for(int i=0;i<100;i++){
+			nombreart[i]='\0';
+		}
+
+       
+        while (!feof(fptr1)) 
+        {
+            strcpy(str, "\0");
+            fgets(str, 100, fptr1);
+            if(!feof(fptr1)) 
+            {
+                linectr++;
+             
+                if (linectr == lno ) 
+                {
+                	fprintf(fptr2, "%s", nombreart);
+                }else if(linectr == lno+1){	
+                	fprintf(fptr2, "%s",nombreart);
+                }else if(linectr == lno+2){	
+                	fprintf(fptr2, "%s",nombreart);
+                }else if(linectr == lno+3){	
+                	fprintf(fptr2, "%s",nombreart);
+                }else if(linectr == lno+4){	
+                	fprintf(fptr2, "%s",nombreart);
+                }else{
+                    fprintf(fptr2, "%s", str);
+                }
+
+           	}
+        }
+        fclose(fptr1);
+        fclose(fptr2);
+        remove(nombredep2);
+        rename(temp, strcat(nombredep2,".d"));
+        printf(" Borrado.!! \n");
+
 }
